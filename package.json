@@ -28,6 +28,7 @@
     "@stryker-mutator/core": "^9.6.1",
     "@stryker-mutator/vitest-runner": "^9.6.1",
     "@tsconfig/strictest": "^2.0.8",
+    "@types/node": "^25.9.2",
     "@vitest/coverage-v8": "4.1.8",
     "husky": "^9.1.7",
     "oxfmt": "^0.53.0",

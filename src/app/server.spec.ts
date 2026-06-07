@@ -2,6 +2,16 @@ import { describe, it, expect, vi } from "vitest";
 import type { Anime } from "../common/anime.model";
 import { createRouter } from "./server";
 
+describe("GET /health", () => {
+	it("returns 204", async () => {
+		const router = createRouter({ fetchUserAnimeList: vi.fn() });
+
+		const res = await router.request("/health");
+
+		expect(res.status).toBe(204);
+	});
+});
+
 const mockAnime: Anime = {
 	id: 1,
 	status: "watching",

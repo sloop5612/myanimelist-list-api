@@ -24,6 +24,8 @@ const route2QuerySchema = z.object({
 export function createRouter(client: AnimeListClient) {
 	const app = new Hono();
 
+	app.get("/health", (c) => c.body(null, 204));
+
 	app.get(
 		"/user/:username/animelist",
 		zValidator("query", route1QuerySchema, (result, c) => {
