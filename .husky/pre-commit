@@ -1,1 +1,4 @@
-pnpm ci:fast
+pnpm format
+pnpm typecheck
+pnpm lint
+pnpm test
