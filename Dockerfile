@@ -4,6 +4,7 @@ WORKDIR /app
 RUN npm install -g pnpm
 
 COPY package.json pnpm-lock.yaml ./
+RUN mkdir -p .git
 RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store \
     pnpm install --frozen-lockfile
 
