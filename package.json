@@ -7,7 +7,7 @@
     "lint:fix": "oxlint --fix",
     "format": "oxfmt",
     "format:check": "oxfmt --check",
-    "test": "pnpm test:unit && pnpnpm test:mutation",
+    "test": "pnpm test:unit && pnpm test:mutation",
     "test:unit": "vitest --run",
     "test:mutation": "stryker run",
     "test:unit:watch": "vitest"
