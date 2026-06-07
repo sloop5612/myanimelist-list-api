@@ -3,9 +3,13 @@ import { defineConfig } from "vitest/config";
 export default defineConfig({
 	appType: "custom",
 	build: {
+		target: "node24",
 		lib: {
 			entry: "src/main.ts",
 			formats: ["es"],
+		},
+		rollupOptions: {
+			external: (id: string) => !id.startsWith(".") && !id.startsWith("/"),
 		},
 	},
 	test: {
