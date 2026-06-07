@@ -1,9 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { z } from "zod";
-import {
-	animeListItemDtoToAnime,
-	animeListStatusIdToAnimeListStatus,
-} from "./animeListItem.dto";
+import { animeListItemDtoToAnime, animeListStatusIdToAnimeListStatus } from "./animeListItem.dto";
 
 describe("animeStatusIdToStatusCodec", () => {
 	describe("decode (number → status)", () => {

@@ -1,13 +1,7 @@
 import { z } from "zod";
 import { nonEmptyStringOrNullSchema } from "./string";
 
-export const animeStatusSchema = z.enum([
-	"abandoned",
-	"paused",
-	"planned",
-	"watched",
-	"watching",
-]);
+export const animeStatusSchema = z.enum(["abandoned", "paused", "planned", "watched", "watching"]);
 export type AnimeStatus = z.infer<typeof animeStatusSchema>;
 
 export const animeGenreSchema = z.object({

@@ -1,9 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-	animeDemographicSchema,
-	animeGenreSchema,
-	animeSchema,
-} from "./anime.model";
+import { animeDemographicSchema, animeGenreSchema, animeSchema } from "./anime.model";
 
 describe("animeGenreSchema", () => {
 	it("parses valid genre", () => {

@@ -25,13 +25,7 @@ export function createClient() {
 	};
 }
 
-function getAnimeListUrl(
-	username: string,
-	status: AnimeListStatusFilter,
-) {
+function getAnimeListUrl(username: string, status: AnimeListStatusFilter) {
 	const statusId = animeListStatusFilterIdToStatusFilter.encode(status);
-	return new URL(
-		`/animelist/${username}?status=${statusId}`,
-		"https://myanimelist.net",
-	);
+	return new URL(`/animelist/${username}?status=${statusId}`, "https://myanimelist.net");
 }

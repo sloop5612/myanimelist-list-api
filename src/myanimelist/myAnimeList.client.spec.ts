@@ -8,9 +8,7 @@ describe("createClient", () => {
 
 	describe("fetchUserAnimeList", () => {
 		it("returns empty array when table lacks data-items attribute", async () => {
-			vi.spyOn(globalThis, "fetch").mockResolvedValue(
-				new Response("<html><table></table></html>"),
-			);
+			vi.spyOn(globalThis, "fetch").mockResolvedValue(new Response("<html><table></table></html>"));
 			const client = createClient();
 
 			const result = await client.fetchUserAnimeList("testuser");
@@ -59,9 +57,7 @@ describe("createClient", () => {
 				},
 			];
 			const html = `<html><table data-items='${JSON.stringify(items)}'></table></html>`;
-			vi.spyOn(globalThis, "fetch").mockResolvedValue(
-				new Response(html),
-			);
+			vi.spyOn(globalThis, "fetch").mockResolvedValue(new Response(html));
 			const client = createClient();
 
 			const result = await client.fetchUserAnimeList("testuser");
@@ -87,15 +83,10 @@ describe("createClient", () => {
 				},
 			];
 			const html = `<html><table data-items='${JSON.stringify(items)}'></table></html>`;
-			vi.spyOn(globalThis, "fetch").mockResolvedValue(
-				new Response(html),
-			);
+			vi.spyOn(globalThis, "fetch").mockResolvedValue(new Response(html));
 			const client = createClient();
 
-			const result = await client.fetchUserAnimeList(
-				"testuser",
-				"abandoned",
-			);
+			const result = await client.fetchUserAnimeList("testuser", "abandoned");
 
 			expect(result).toEqual([
 				{
