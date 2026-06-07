@@ -12,7 +12,7 @@ export default defineConfig({
 		coverage: {
 			enabled: true,
 			include: ["src/**/*.ts"],
-			exclude: [".stryker-tmp/**"],
+			exclude: [".stryker-tmp/**", "src/main.ts"],
 			thresholds: {
 				100: true,
 			},

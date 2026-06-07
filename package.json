@@ -3,6 +3,7 @@
   "scripts": {
     "ci": "pnpm format:check && pnpm typecheck && pnpm lint && pnpm test && pnpm build",
     "build": "vite build",
+    "dev": "tsx watch src/main.ts",
     "typecheck": "tsc --noEmit",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
@@ -15,7 +16,9 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@hono/node-server": "^2.0.4",
     "cheerio": "^1.2.0",
+    "hono": "^4.12.23",
     "type-fest": "^5.7.0",
     "zod": "^4.4.3"
   },
@@ -27,6 +30,7 @@
     "husky": "^9.1.7",
     "oxfmt": "^0.53.0",
     "oxlint": "^1.68.0",
+    "tsx": "^4.22.4",
     "typescript": "^6.0.3",
     "vite": "^8.0.16",
     "vitest": "^4.1.8"
