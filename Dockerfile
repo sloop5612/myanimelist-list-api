@@ -4,7 +4,8 @@ WORKDIR /app
 RUN npm install -g pnpm
 
 COPY package.json pnpm-lock.yaml ./
-RUN pnpm install --frozen-lockfile
+RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store \
+    pnpm install --frozen-lockfile
 
 COPY . .
 RUN pnpm build
@@ -15,7 +16,8 @@ WORKDIR /app
 RUN npm install -g pnpm
 
 COPY package.json pnpm-lock.yaml ./
-RUN pnpm install --frozen-lockfile --prod
+RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store \
+    pnpm install --frozen-lockfile --prod --ignore-scripts
 
 COPY --from=build /app/dist ./dist
 
