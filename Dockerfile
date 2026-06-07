@@ -1,33 +1,28 @@
-FROM node:24-alpine AS build
+FROM node:24-alpine AS base
+
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME/bin:$PATH"
+RUN corepack enable
+COPY . /app
 WORKDIR /app
 
-RUN npm install -g pnpm
+FROM base AS prod-deps
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
+    pnpm install --prod --frozen-lockfile --ignore-scripts
 
-COPY package.json pnpm-lock.yaml ./
-RUN mkdir -p .git
-RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store \
-    pnpm install
-
-COPY . .
+FROM base AS build
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
+    pnpm install --frozen-lockfile --ignore-scripts
 RUN pnpm build
 
-FROM node:24-alpine
-WORKDIR /app
-
-RUN npm install -g pnpm
-
-COPY package.json pnpm-lock.yaml ./
-RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store \
-    pnpm install --frozen-lockfile --prod --ignore-scripts
-
-COPY --from=build /app/dist ./dist
+FROM base
+COPY --from=prod-deps /app/node_modules /app/node_modules
+COPY --from=build /app/dist /app/dist
 
 ENV TZ=UTC
 ENV PORT=3000
-
 EXPOSE $PORT
 
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
   CMD wget --no-verbose --tries=1 --spider "http://localhost:$PORT/health" || exit 1
-
 CMD ["node", "dist/main.mjs"]

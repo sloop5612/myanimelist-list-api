@@ -1,5 +1,6 @@
 {
   "private": true,
+  "type": "module",
   "scripts": {
     "ci": "pnpm format:check && pnpm typecheck && pnpm lint && pnpm test && pnpm build",
     "build": "vite build",
