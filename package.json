@@ -1,0 +1,31 @@
+{
+  "private": true,
+  "scripts": {
+    "ci": "pnpm format:check && pnpm lint && pnpm test && pnpm build",
+    "build": "vite build",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix",
+    "format": "oxfmt",
+    "format:check": "oxfmt --check",
+    "test": "pnpm test:unit && pnpnpm test:mutation",
+    "test:unit": "vitest --run",
+    "test:mutation": "stryker run",
+    "test:unit:watch": "vitest"
+  },
+  "devDependencies": {
+    "@stryker-mutator/core": "^9.6.1",
+    "@stryker-mutator/vitest-runner": "^9.6.1",
+    "@tsconfig/strictest": "^2.0.8",
+    "@vitest/coverage-v8": "4.1.8",
+    "oxfmt": "^0.53.0",
+    "oxlint": "^1.68.0",
+    "typescript": "^6.0.3",
+    "vite": "^8.0.16",
+    "vitest": "^4.1.8"
+  },
+  "dependencies": {
+    "cheerio": "^1.2.0",
+    "type-fest": "^5.7.0",
+    "zod": "^4.4.3"
+  }
+}

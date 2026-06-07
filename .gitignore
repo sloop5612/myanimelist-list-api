@@ -1,3 +1,6 @@
+.stryker-tmp
+reports
+
 # Logs
 logs
 *.log
