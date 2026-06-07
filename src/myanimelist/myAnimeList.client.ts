@@ -6,14 +6,22 @@ import {
 	type AnimeListStatusFilter,
 } from "./animeList.model";
 import { animeListItemDtoToAnime } from "./animeListItem.dto";
+import { animeListSortToOrderIdMap, type AnimeListSort } from "./animeListSort.model";
+
+export type FetchUserAnimeListOptions = {
+	status?: AnimeListStatusFilter;
+	sort?: AnimeListSort | undefined;
+};
 
 export function createClient() {
 	return {
 		async fetchUserAnimeList(
 			username: string,
-			status: AnimeListStatusFilter = "all",
+			options?: FetchUserAnimeListOptions,
 		): Promise<Anime[]> {
-			const response = await fetch(getAnimeListUrl(username, status));
+			const status = options?.status ?? "all";
+			const sort = options?.sort;
+			const response = await fetch(getAnimeListUrl(username, status, sort));
 			const html = await response.text();
 			const $ = loadHtml(html);
 
@@ -25,7 +33,11 @@ export function createClient() {
 	};
 }
 
-function getAnimeListUrl(username: string, status: AnimeListStatusFilter) {
+function getAnimeListUrl(username: string, status: AnimeListStatusFilter, sort?: AnimeListSort) {
 	const statusId = animeListStatusFilterIdToStatusFilter.encode(status);
-	return new URL(`/animelist/${username}?status=${statusId}`, "https://myanimelist.net");
+	const params = new URLSearchParams({ status: String(statusId) });
+	if (sort) {
+		params.set("order", String(animeListSortToOrderIdMap[sort]));
+	}
+	return new URL(`/animelist/${username}?${params.toString()}`, "https://myanimelist.net");
 }

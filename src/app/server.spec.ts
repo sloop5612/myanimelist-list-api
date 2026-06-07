@@ -18,7 +18,10 @@ describe("GET /user/:username/animelist", () => {
 
 		expect(res.status).toBe(200);
 		expect(await res.json()).toEqual([mockAnime]);
-		expect(fetchUserAnimeList).toHaveBeenCalledWith("testuser");
+		expect(fetchUserAnimeList).toHaveBeenCalledWith("testuser", {
+			status: "all",
+			sort: undefined,
+		});
 	});
 
 	it("returns 500 when client throws", async () => {
@@ -29,6 +32,31 @@ describe("GET /user/:username/animelist", () => {
 
 		expect(res.status).toBe(500);
 		expect(await res.json()).toEqual({ error: "Failed to fetch anime list" });
+	});
+
+	it("returns 200 with sort param", async () => {
+		const fetchUserAnimeList = vi.fn().mockResolvedValue([mockAnime]);
+		const router = createRouter({ fetchUserAnimeList });
+
+		const res = await router.request("/user/testuser/animelist?sort=score_desc");
+
+		expect(res.status).toBe(200);
+		expect(await res.json()).toEqual([mockAnime]);
+		expect(fetchUserAnimeList).toHaveBeenCalledWith("testuser", {
+			status: "all",
+			sort: "score_desc",
+		});
+	});
+
+	it("returns 400 for invalid sort", async () => {
+		const fetchUserAnimeList = vi.fn();
+		const router = createRouter({ fetchUserAnimeList });
+
+		const res = await router.request("/user/testuser/animelist?sort=invalid");
+
+		expect(res.status).toBe(400);
+		expect(await res.json()).toEqual({ error: "Invalid sort" });
+		expect(fetchUserAnimeList).not.toHaveBeenCalled();
 	});
 });
 
@@ -41,7 +69,10 @@ describe("GET /user/:username/animelist/:status", () => {
 
 		expect(res.status).toBe(200);
 		expect(await res.json()).toEqual([mockAnime]);
-		expect(fetchUserAnimeList).toHaveBeenCalledWith("testuser", "watching");
+		expect(fetchUserAnimeList).toHaveBeenCalledWith("testuser", {
+			status: "watching",
+			sort: undefined,
+		});
 	});
 
 	it("returns 400 for invalid status", async () => {
@@ -63,5 +94,30 @@ describe("GET /user/:username/animelist/:status", () => {
 
 		expect(res.status).toBe(500);
 		expect(await res.json()).toEqual({ error: "Failed to fetch anime list" });
+	});
+
+	it("returns 200 with sort param", async () => {
+		const fetchUserAnimeList = vi.fn().mockResolvedValue([mockAnime]);
+		const router = createRouter({ fetchUserAnimeList });
+
+		const res = await router.request("/user/testuser/animelist/watching?sort=score_desc");
+
+		expect(res.status).toBe(200);
+		expect(await res.json()).toEqual([mockAnime]);
+		expect(fetchUserAnimeList).toHaveBeenCalledWith("testuser", {
+			status: "watching",
+			sort: "score_desc",
+		});
+	});
+
+	it("returns 400 for invalid sort", async () => {
+		const fetchUserAnimeList = vi.fn();
+		const router = createRouter({ fetchUserAnimeList });
+
+		const res = await router.request("/user/testuser/animelist/watching?sort=invalid");
+
+		expect(res.status).toBe(400);
+		expect(await res.json()).toEqual({ error: "Invalid sort" });
+		expect(fetchUserAnimeList).not.toHaveBeenCalled();
 	});
 });

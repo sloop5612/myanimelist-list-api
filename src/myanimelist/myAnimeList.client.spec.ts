@@ -37,7 +37,7 @@ describe("createClient", () => {
 			);
 			const client = createClient();
 
-			await client.fetchUserAnimeList("testuser", "watching");
+			await client.fetchUserAnimeList("testuser", { status: "watching" });
 
 			expect(globalThis.fetch).toHaveBeenCalledWith(
 				expect.objectContaining({
@@ -86,7 +86,7 @@ describe("createClient", () => {
 			vi.spyOn(globalThis, "fetch").mockResolvedValue(new Response(html));
 			const client = createClient();
 
-			const result = await client.fetchUserAnimeList("testuser", "abandoned");
+			const result = await client.fetchUserAnimeList("testuser", { status: "abandoned" });
 
 			expect(result).toEqual([
 				{
@@ -96,6 +96,36 @@ describe("createClient", () => {
 					title: { native: "Test", english: null },
 				},
 			]);
+		});
+
+		it("appends order param for score_desc sort", async () => {
+			vi.spyOn(globalThis, "fetch").mockResolvedValue(
+				new Response("<html><table data-items='[]'></table></html>"),
+			);
+			const client = createClient();
+
+			await client.fetchUserAnimeList("testuser", { status: "all", sort: "score_desc" });
+
+			expect(globalThis.fetch).toHaveBeenCalledWith(
+				expect.objectContaining({
+					href: "https://myanimelist.net/animelist/testuser?status=7&order=17",
+				}),
+			);
+		});
+
+		it("appends order param for start_date_asc sort", async () => {
+			vi.spyOn(globalThis, "fetch").mockResolvedValue(
+				new Response("<html><table data-items='[]'></table></html>"),
+			);
+			const client = createClient();
+
+			await client.fetchUserAnimeList("testuser", { status: "all", sort: "start_date_asc" });
+
+			expect(globalThis.fetch).toHaveBeenCalledWith(
+				expect.objectContaining({
+					href: "https://myanimelist.net/animelist/testuser?status=7&order=-3",
+				}),
+			);
 		});
 	});
 });
