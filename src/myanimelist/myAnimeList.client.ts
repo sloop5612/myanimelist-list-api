@@ -1,5 +1,4 @@
 import { load as loadHtml } from "cheerio";
-import type { NonEmptyString } from "type-fest";
 import { z } from "zod";
 import type { Anime } from "../common/anime.model";
 import {
@@ -8,12 +7,10 @@ import {
 } from "./animeList.model";
 import { animeListItemDtoToAnime } from "./animeListItem.dto";
 
-const baseUrl = new URL("https://myanimelist.net");
-
 export function createClient() {
 	return {
 		async fetchUserAnimeList(
-			username: NonEmptyString<string>,
+			username: string,
 			status: AnimeListStatusFilter = "all",
 		): Promise<Anime[]> {
 			const response = await fetch(getAnimeListUrl(username, status));
@@ -30,8 +27,11 @@ export function createClient() {
 
 function getAnimeListUrl(
 	username: string,
-	status: AnimeListStatusFilter = "all",
+	status: AnimeListStatusFilter,
 ) {
 	const statusId = animeListStatusFilterIdToStatusFilter.encode(status);
-	return new URL(`/animelist/${username}?status=${statusId}`, baseUrl);
+	return new URL(
+		`/animelist/${username}?status=${statusId}`,
+		"https://myanimelist.net",
+	);
 }

@@ -63,7 +63,7 @@ export const animeListItemDtoToAnime = z.codec(
 			status: animeListStatusIdToAnimeListStatus.decode(value.status),
 			title: {
 				native: value.anime_title,
-				english: value.anime_title_eng === "" ? null : value.anime_title_eng,
+				english: value.anime_title_eng,
 			},
 		}),
 	},

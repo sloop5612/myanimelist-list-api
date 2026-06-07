@@ -24,7 +24,7 @@ describe("animeStatusIdToStatusCodec", () => {
 
 			const act = () => animeListStatusIdToAnimeListStatus.parse(input);
 
-			expect(act).toThrow();
+			expect(act).toThrow("Unknown status");
 		});
 
 		it("throws for unknown status id 99", () => {
@@ -32,7 +32,7 @@ describe("animeStatusIdToStatusCodec", () => {
 
 			const act = () => animeListStatusIdToAnimeListStatus.parse(input);
 
-			expect(act).toThrow();
+			expect(act).toThrow("Unknown status");
 		});
 
 		it("throws for non-number input", () => {

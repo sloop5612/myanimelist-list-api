@@ -18,13 +18,43 @@ describe("createClient", () => {
 			expect(result).toEqual([]);
 		});
 
+		it("calls correct URL with default status", async () => {
+			vi.spyOn(globalThis, "fetch").mockResolvedValue(
+				new Response("<html><table data-items='[]'></table></html>"),
+			);
+			const client = createClient();
+
+			await client.fetchUserAnimeList("testuser");
+
+			expect(globalThis.fetch).toHaveBeenCalledWith(
+				expect.objectContaining({
+					href: "https://myanimelist.net/animelist/testuser?status=7",
+				}),
+			);
+		});
+
+		it("calls correct URL with custom status", async () => {
+			vi.spyOn(globalThis, "fetch").mockResolvedValue(
+				new Response("<html><table data-items='[]'></table></html>"),
+			);
+			const client = createClient();
+
+			await client.fetchUserAnimeList("testuser", "watching");
+
+			expect(globalThis.fetch).toHaveBeenCalledWith(
+				expect.objectContaining({
+					href: "https://myanimelist.net/animelist/testuser?status=1",
+				}),
+			);
+		});
+
 		it("parses anime list from data-items attribute", async () => {
 			const items = [
 				{
 					anime_id: 1,
 					anime_score_val: 8.5,
 					anime_title: "Naruto",
-					anime_title_eng: "Naruto",
+					anime_title_eng: "Naruto English",
 					status: 2,
 				},
 			];
@@ -41,7 +71,7 @@ describe("createClient", () => {
 					id: 1,
 					score: 8.5,
 					status: "watched",
-					title: { native: "Naruto", english: "Naruto" },
+					title: { native: "Naruto", english: "Naruto English" },
 				},
 			]);
 		});
